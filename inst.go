@@ -1,6 +1,6 @@
 package trds16
 
-func Inst(op byte, arg ...byte) int16 {
+func I(op byte, arg ...byte) int16 {
 	if len(arg) > 0 {
 		return int16(op)<<8 | int16(arg[0])
 	}

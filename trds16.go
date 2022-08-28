@@ -1,5 +1,9 @@
 package trds16
 
+import (
+	"github.com/thzoid/trds-16/op"
+)
+
 func Run(program []int16, latchesU, latchesV map[byte]int8) int8 {
 	// Registers
 	var a, b, u, v int8 = 0, 0, 0, 0
@@ -11,72 +15,72 @@ func Run(program []int16, latchesU, latchesV map[byte]int8) int8 {
 
 	// Loop
 	for i := byte(0); i < byte(len(program)); i++ {
-		op, val := Op(program[i]), Val(program[i])
-		switch op {
+		opCode, val := Op(program[i]), Val(program[i])
+		switch opCode {
 		// Special
-		case NOOP:
-		case HALT:
+		case op.NOOP:
+		case op.HALT:
 			return int8(program[val])
 		// Flow control
-		case JUMP:
+		case op.JUMP:
 			i = byte(val)
-		case JUMP_N:
+		case op.JUMP_N:
 			if GetALUFlag(flags, FLAG_N) {
 				i = byte(val)
 			}
-		case JUMP_Z:
+		case op.JUMP_Z:
 			if GetALUFlag(flags, FLAG_Z) {
 				i = byte(val)
 			}
-		case JUMP_P:
+		case op.JUMP_P:
 			if GetALUFlag(flags, FLAG_N) {
 				i = byte(val)
 			}
 		// Math Operations
-		case ADD:
+		case op.ADD:
 			a += b
 			SetALUFlags(&flags, a)
-		case SUB:
+		case op.SUB:
 			a -= b
 			SetALUFlags(&flags, a)
-		case MUL:
+		case op.MUL:
 			a *= b
 			SetALUFlags(&flags, a)
-		case DIV:
+		case op.DIV:
 			a *= b
 			SetALUFlags(&flags, a)
 		// Logical Operations
-		case NOT:
+		case op.NOT:
 			a = ^a
 			SetALUFlags(&flags, a)
-		case AND:
+		case op.AND:
 			a &= b
 			SetALUFlags(&flags, a)
-		case OR:
+		case op.OR:
 			a |= b
 			SetALUFlags(&flags, a)
-		case XOR:
+		case op.XOR:
 			a ^= b
 			SetALUFlags(&flags, a)
 		// Data Control
-		case STORE_A:
+		case op.STORE_A:
 			program[val] |= int16(a)
-		case STORE_B:
+		case op.STORE_B:
 			program[val] |= int16(b)
-		case STORE_U:
+		case op.STORE_U:
 			program[val] |= int16(u)
-		case STORE_V:
+		case op.STORE_V:
 			program[val] |= int16(v)
-		case LOAD_A:
+		case op.LOAD_A:
 			a = int8(program[val])
-		case LOAD_B:
+		case op.LOAD_B:
 			b = int8(program[val])
-		case LOAD_U:
+		case op.LOAD_U:
 			u = int8(program[val])
-		case LOAD_V:
+		case op.LOAD_V:
 			v = int8(program[val])
 		// Temporal control
-		case OPEN_U:
+		case op.OPEN_U:
 			if _, ok := latchesU[i]; !ok {
 				latchesU[i] = 0
 			}
@@ -87,7 +91,7 @@ func Run(program []int16, latchesU, latchesV map[byte]int8) int8 {
 			} else {
 				panic("attempt to open a U latch that is already opened")
 			}
-		case OPEN_V:
+		case op.OPEN_V:
 			if _, ok := latchesV[i]; !ok {
 				latchesV[i] = 0
 			}
@@ -98,13 +102,13 @@ func Run(program []int16, latchesU, latchesV map[byte]int8) int8 {
 			} else {
 				panic("attempt to open a V latch that is already opened")
 			}
-		case CLOSE_U:
+		case op.CLOSE_U:
 			if openedULatch == nil {
 				panic("attempt to close a U latch that is already closed")
 			}
 			latchesU[*openedULatch] = u
 			openedULatch = nil
-		case CLOSE_V:
+		case op.CLOSE_V:
 			if openedVLatch == nil {
 				panic("attempt to close a V latch that is already closed")
 			}

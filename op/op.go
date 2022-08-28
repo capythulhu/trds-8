@@ -1,4 +1,4 @@
-package trds16
+package op
 
 const (
 	// Special
