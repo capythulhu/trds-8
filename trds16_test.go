@@ -8,7 +8,7 @@ import (
 )
 
 func TestSimpleTemporalBranchProgram(t *testing.T) {
-	program := []int16{
+	program := []uint16{
 		I(op.NOOP, 0),
 		I(op.NOOP, 1),
 		I(op.NOOP, 0),
@@ -28,7 +28,7 @@ func TestSimpleTemporalBranchProgram(t *testing.T) {
 }
 
 func TestParadoxTemporaProgram(t *testing.T) {
-	program := []int16{
+	program := []uint16{
 		I(op.NOOP, 0),
 		I(op.NOOP, 1),
 		I(op.NOOP, 0),

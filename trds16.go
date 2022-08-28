@@ -6,7 +6,7 @@ import (
 	"github.com/thzoid/trds-16/op"
 )
 
-func Run(program []int16, latchesU, latchesV map[byte]int8) (code int8, iterations int) {
+func Run(program []uint16, latchesU, latchesV map[byte]int8) (code int8, iterations int) {
 	// Registers
 	var a, b, u, v int8 = 0, 0, 0, 0
 	var flags byte = 0 // 000000NZ
@@ -66,13 +66,13 @@ func Run(program []int16, latchesU, latchesV map[byte]int8) (code int8, iteratio
 			SetALUFlags(&flags, a)
 		// Data Control
 		case op.STORE_A:
-			program[val] |= int16(a)
+			program[val] |= uint16(a)
 		case op.STORE_B:
-			program[val] |= int16(b)
+			program[val] |= uint16(b)
 		case op.STORE_U:
-			program[val] |= int16(u)
+			program[val] |= uint16(u)
 		case op.STORE_V:
-			program[val] |= int16(v)
+			program[val] |= uint16(v)
 		case op.LOAD_A:
 			a = int8(program[val])
 		case op.LOAD_B:
@@ -123,12 +123,12 @@ func Run(program []int16, latchesU, latchesV map[byte]int8) (code int8, iteratio
 	return 0, iterations
 }
 
-func RunTemporal(program []int16, steps uint) (results []int8, iterations []int) {
+func RunTemporal(program []uint16, steps uint) (results []int8, iterations []int) {
 	results = make([]int8, steps)
 	iterations = make([]int, steps)
 	latchesU, latchesV := make(map[byte]int8), make(map[byte]int8)
 	for i := uint(0); i < steps; i++ {
-		p := make([]int16, len(program))
+		p := make([]uint16, len(program))
 		copy(p, program)
 		results[i], iterations[i] = Run(p, latchesU, latchesV)
 	}
