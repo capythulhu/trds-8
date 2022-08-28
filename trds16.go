@@ -1,6 +1,8 @@
 package trds16
 
 import (
+	"fmt"
+
 	"github.com/thzoid/trds-16/op"
 )
 
@@ -115,7 +117,7 @@ func Run(program []int16, latchesU, latchesV map[byte]int8) (code int8, iteratio
 			latchesV[*openedVLatch] = v
 			openedVLatch = nil
 		default:
-			panic("unknown instruction")
+			panic(fmt.Errorf("unknown instruction: %d", opCode))
 		}
 	}
 	return 0, iterations
