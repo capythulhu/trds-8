@@ -12,14 +12,14 @@ func main() {
 	const bits = 16
 
 	// Create Classical Registers
-	A := mem.NewRegister(bits / 2)
-	B := mem.NewRegister(bits / 2)
+	mem.NewRegister(bits / 2)
+	mem.NewRegister(bits / 2)
 
 	// Create RAM with address bus size = data bus size / 2
 	ram := mem.NewRAM(bits, uint(math.Pow(2, bits/2)))
 
 	// Create Control Unit with specified data bus size
-	controlUnit := ctrl.NewControlUnit(ctrl.Setup{})
+	controlUnit := ctrl.NewControlUnit(ctrl.SIMPLE16)
 	// Connect Control Unit to RAM
 	controlUnit.RAM = ram
 }

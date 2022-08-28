@@ -1,23 +1,20 @@
 package ctrl
 
-import "github.com/thzoid/trds-16/mem"
-
-var (
-	SIMPLE16 = Setup{}
-	TRDS16   = Setup{}
+import (
+	"github.com/thzoid/trds-16/alu"
+	"github.com/thzoid/trds-16/mem"
 )
-
-// Control Unit Setup
-type Setup struct {
-	Operations []func(cU *ControlUnit)
-}
 
 // Control Unit
 type ControlUnit struct {
 	// Random Access Memory
 	RAM *mem.RAM
-	// Registers
-	PC, ACC, IC *mem.Register
+	// Inner Registers
+	PC, ACC, CI *mem.Register
+	// Outer Registers
+	Registers []*mem.Register
+	// Arithmetic Logic Unit
+	ALU *alu.ArithmeticLogicUnit
 }
 
 // Create new Control Unit
