@@ -1,75 +1,4 @@
-package main
-
-const (
-	NOOP byte = iota
-	HALT
-
-	JUMP
-	JUMP_N
-	JUMP_Z
-	JUMP_P
-
-	ADD
-	SUB
-	MUL
-	DIV
-
-	NOT
-	AND
-	OR
-	XOR
-
-	LOAD_A
-	LOAD_B
-	LOAD_U
-	LOAD_V
-
-	STORE_A
-	STORE_B
-	STORE_U
-	STORE_V
-
-	OPEN_U
-	OPEN_V
-	CLOSE_U
-	CLOSE_V
-)
-
-func Inst(op byte, arg ...byte) int16 {
-	if len(arg) > 0 {
-		return int16(op)<<8 | int16(arg[0])
-	}
-	return int16(op) << 8
-}
-
-func Op(inst int16) byte {
-	return byte(inst >> 8)
-}
-
-func Val(inst int16) int8 {
-	return int8(inst)
-}
-
-const (
-	FLAG_Z = iota
-	FLAG_N
-)
-
-func SetALUFlag(flags *byte, flag byte, val bool) {
-	*flags &= ^(1 << flag)
-	if val {
-		*flags |= 1 << flag
-	}
-}
-
-func SetALUFlags(flags *byte, a int8) {
-	SetALUFlag(flags, FLAG_Z, a == 0)
-	SetALUFlag(flags, FLAG_N, a < 0)
-}
-
-func GetALUFlag(flags, flag byte) bool {
-	return (flags & 1 << flag) > 0
-}
+package trds16
 
 func Run(program []int16, latchesU, latchesV map[byte]int8) int8 {
 	// Registers
@@ -171,13 +100,13 @@ func Run(program []int16, latchesU, latchesV map[byte]int8) int8 {
 			}
 		case CLOSE_U:
 			if openedULatch == nil {
-				panic("attempt to close a latch that is already closed")
+				panic("attempt to close a U latch that is already closed")
 			}
 			latchesU[*openedULatch] = u
 			openedULatch = nil
 		case CLOSE_V:
 			if openedVLatch == nil {
-				panic("attempt to close a latch that is already closed")
+				panic("attempt to close a V latch that is already closed")
 			}
 			latchesV[*openedVLatch] = v
 			openedVLatch = nil
@@ -198,5 +127,3 @@ func RunTemporal(program []int16, steps uint) []int8 {
 	}
 	return results
 }
-
-func main() {}
