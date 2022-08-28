@@ -23,7 +23,8 @@ func TestSimpleTemporalBranchProgram(t *testing.T) {
 		I(op.CLOSE_U),
 		I(op.HALT, 0x0),
 	}
-	assert.Equal(t, RunTemporal(program, 2), []int8{0, 1})
+	results, _ := RunTemporal(program, 2)
+	assert.Equal(t, results, []int8{0, 1})
 }
 
 func TestParadoxTemporaProgram(t *testing.T) {
@@ -44,5 +45,6 @@ func TestParadoxTemporaProgram(t *testing.T) {
 		I(op.CLOSE_U),
 		I(op.HALT, 0x1),
 	}
-	assert.Equal(t, RunTemporal(program, 10), []int8{1, 0, 1, 0, 1, 0, 1, 0, 1, 0})
+	results, _ := RunTemporal(program, 10)
+	assert.Equal(t, results, []int8{1, 0, 1, 0, 1, 0, 1, 0, 1, 0})
 }

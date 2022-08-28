@@ -4,7 +4,7 @@ import (
 	"github.com/thzoid/trds-16/op"
 )
 
-func Run(program []int16, latchesU, latchesV map[byte]int8) int8 {
+func Run(program []int16, latchesU, latchesV map[byte]int8) (code int8, iterations int) {
 	// Registers
 	var a, b, u, v int8 = 0, 0, 0, 0
 	var flags byte = 0 // 000000NZ
@@ -14,13 +14,13 @@ func Run(program []int16, latchesU, latchesV map[byte]int8) int8 {
 	var openedVLatch *byte
 
 	// Loop
-	for i := byte(0); i < byte(len(program)); i++ {
+	for i := byte(0); i < byte(len(program)); i, iterations = i+1, iterations+1 {
 		opCode, val := Op(program[i]), Val(program[i])
 		switch opCode {
 		// Special
 		case op.NOOP:
 		case op.HALT:
-			return int8(program[val])
+			return int8(program[val]), iterations
 		// Flow control
 		case op.JUMP:
 			i = byte(val)
@@ -118,16 +118,17 @@ func Run(program []int16, latchesU, latchesV map[byte]int8) int8 {
 			panic("unknown instruction")
 		}
 	}
-	return 0
+	return 0, iterations
 }
 
-func RunTemporal(program []int16, steps uint) []int8 {
-	results := make([]int8, steps)
+func RunTemporal(program []int16, steps uint) (results []int8, iterations []int) {
+	results = make([]int8, steps)
+	iterations = make([]int, steps)
 	latchesU, latchesV := make(map[byte]int8), make(map[byte]int8)
 	for i := uint(0); i < steps; i++ {
 		p := make([]int16, len(program))
 		copy(p, program)
-		results[i] = Run(p, latchesU, latchesV)
+		results[i], iterations[i] = Run(p, latchesU, latchesV)
 	}
-	return results
+	return results, iterations
 }
