@@ -1,4 +1,4 @@
-package trds16
+package cpu
 
 const (
 	FLAG_Z = iota

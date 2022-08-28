@@ -1,4 +1,4 @@
-package trds16
+package cpu
 
 // Build instruction
 func I(op byte, arg ...int8) uint16 {

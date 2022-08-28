@@ -3,6 +3,7 @@ package trds16
 import (
 	"fmt"
 
+	"github.com/thzoid/trds-16/cpu"
 	"github.com/thzoid/trds-16/op"
 )
 
@@ -17,7 +18,7 @@ func Run(program []uint16, latchesU, latchesV map[byte]int8) (code int8, iterati
 
 	// Loop
 	for i := byte(0); i < byte(len(program)); i, iterations = i+1, iterations+1 {
-		opCode, val := Op(program[i]), Val(program[i])
+		opCode, val := cpu.Op(program[i]), cpu.Val(program[i])
 		switch opCode {
 		// Special
 		case op.NOOP:
@@ -27,43 +28,43 @@ func Run(program []uint16, latchesU, latchesV map[byte]int8) (code int8, iterati
 		case op.JUMP:
 			i = byte(val)
 		case op.JUMP_N:
-			if GetALUFlag(flags, FLAG_N) {
+			if cpu.GetALUFlag(flags, cpu.FLAG_N) {
 				i = byte(val)
 			}
 		case op.JUMP_Z:
-			if GetALUFlag(flags, FLAG_Z) {
+			if cpu.GetALUFlag(flags, cpu.FLAG_Z) {
 				i = byte(val)
 			}
 		case op.JUMP_P:
-			if GetALUFlag(flags, FLAG_N) {
+			if cpu.GetALUFlag(flags, cpu.FLAG_N) {
 				i = byte(val)
 			}
 		// Math Operations
 		case op.ADD:
 			a += b
-			SetALUFlags(&flags, a)
+			cpu.SetALUFlags(&flags, a)
 		case op.SUB:
 			a -= b
-			SetALUFlags(&flags, a)
+			cpu.SetALUFlags(&flags, a)
 		case op.MUL:
 			a *= b
-			SetALUFlags(&flags, a)
+			cpu.SetALUFlags(&flags, a)
 		case op.DIV:
 			a *= b
-			SetALUFlags(&flags, a)
+			cpu.SetALUFlags(&flags, a)
 		// Logical Operations
 		case op.NOT:
 			a = ^a
-			SetALUFlags(&flags, a)
+			cpu.SetALUFlags(&flags, a)
 		case op.AND:
 			a &= b
-			SetALUFlags(&flags, a)
+			cpu.SetALUFlags(&flags, a)
 		case op.OR:
 			a |= b
-			SetALUFlags(&flags, a)
+			cpu.SetALUFlags(&flags, a)
 		case op.XOR:
 			a ^= b
-			SetALUFlags(&flags, a)
+			cpu.SetALUFlags(&flags, a)
 		// Data Control
 		case op.STORE_A:
 			program[val] |= uint16(a)
