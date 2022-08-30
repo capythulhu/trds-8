@@ -1,4 +1,4 @@
-module github.com/thzoid/trds-16
+module github.com/thzoid/trds-8
 
 go 1.16
 
