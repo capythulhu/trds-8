@@ -13,7 +13,7 @@ func fetch(program []byte, pc *byte, it *int) byte {
 
 func regPair(b byte) (reg1, reg2 in.Register) {
 	reg1 = in.Register(b >> 4)
-	reg2 = in.Register(b)
+	reg2 = in.Register(b & 0b1111)
 	return
 }
 
@@ -98,8 +98,7 @@ func Run(program []byte, latchesU, latchesV map[byte]int8) (code int8, it int) {
 		case in.LOAD_B:
 			regs[in.REG_B] = int8(program[fetch(program, &i, &it)])
 		case in.LOAD_U:
-			a := fetch(program, &i, &it)
-			regs[in.REG_U] = int8(program[a])
+			regs[in.REG_U] = int8(program[fetch(program, &i, &it)])
 		case in.LOAD_V:
 			regs[in.REG_V] = int8(program[fetch(program, &i, &it)])
 		// Temporal control
