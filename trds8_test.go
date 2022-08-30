@@ -1,10 +1,10 @@
-package trds16
+package trds8
 
 import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/thzoid/trds-16/in"
+	"github.com/thzoid/trds-8/in"
 )
 
 func TestSimpleTemporalBranchProgram(t *testing.T) {

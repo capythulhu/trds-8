@@ -1,4 +1,4 @@
-package trds16
+package trds8
 
 import (
 	"fmt"
