@@ -1,8 +1,10 @@
-package op
+package in
+
+type Operation byte
 
 const (
 	// Special
-	NOOP byte = iota
+	NOOP Operation = iota
 	HALT
 
 	// Flow Control
