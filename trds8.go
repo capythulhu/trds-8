@@ -3,7 +3,7 @@ package trds8
 import (
 	"fmt"
 
-	"github.com/thzoid/trds-16/in"
+	"github.com/thzoid/trds-8/in"
 )
 
 func fetch(program []byte, pc *byte, it *int) byte {
