@@ -111,7 +111,7 @@ func Run(program []byte, latchesU, latchesV map[byte]int8) (code int8, it int) {
 				*openedULatch = i
 				regs[in.REG_U] = latchesU[i]
 			} else {
-				panic(fmt.Errorf("attempt to open a U latch that is already opened. inruction: %d, iteration: %d", i, it))
+				panic(fmt.Errorf("attempt to open a U latch that is already opened. instruction: %d, iteration: %d", i, it))
 			}
 		case in.OPEN_V:
 			if _, ok := latchesV[i]; !ok {
@@ -122,22 +122,22 @@ func Run(program []byte, latchesU, latchesV map[byte]int8) (code int8, it int) {
 				*openedVLatch = i
 				regs[in.REG_V] = latchesV[i]
 			} else {
-				panic(fmt.Errorf("attempt to open a V latch that is already opened. inruction: %d, iteration: %d", i, it))
+				panic(fmt.Errorf("attempt to open a V latch that is already opened. instruction: %d, iteration: %d", i, it))
 			}
 		case in.CLOSE_U:
 			if openedULatch == nil {
-				panic(fmt.Errorf("attempt to close a U latch that is already closed. inruction: %d, iteration: %d", i, it))
+				panic(fmt.Errorf("attempt to close a U latch that is already closed. instruction: %d, iteration: %d", i, it))
 			}
 			latchesU[*openedULatch] = regs[in.REG_U]
 			openedULatch = nil
 		case in.CLOSE_V:
 			if openedVLatch == nil {
-				panic(fmt.Errorf("attempt to close a V latch that is already closed. inruction: %d, iteration: %d", i, it))
+				panic(fmt.Errorf("attempt to close a V latch that is already closed. instruction: %d, iteration: %d", i, it))
 			}
 			latchesV[*openedVLatch] = regs[in.REG_V]
 			openedVLatch = nil
 		default:
-			panic(fmt.Errorf("unknown inruction: %d. inruction: %d, iteration: %d", program[i], i, it))
+			panic(fmt.Errorf("unknown instruction: %d. instruction: %d, iteration: %d", program[i], i, it))
 		}
 	}
 	return 0, it
