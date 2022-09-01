@@ -4,7 +4,7 @@
   <img alt="Version" src="https://img.shields.io/github/go-mod/go-version/thzoid/trds-8">
 </p>
 
-**trds-8** is a fourth-dimensional, 8-bit computer that works with time travel. This repository was created for [this article on Medium](https://google.com).
+**trds-8** is a fourth-dimensional, 8-bit computer that works with time travel. This repository was created for [this article on Medium](https://medium.com/@thiago.antunes.1000/sending-bits-back-in-time-8ee98f2aa164).
 
 ## 📃 Prerequisites
 
