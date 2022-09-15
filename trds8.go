@@ -25,7 +25,7 @@ func Run(program []byte, latchesU, latchesV map[byte]int8) (code int8, it int) {
 	var openedULatch *byte
 	var openedVLatch *byte
 
-	// Loin
+	// Run program
 	for i := byte(0); i < byte(len(program)); i, it = i+1, it+1 {
 		switch in.Operation(program[i]) {
 		// Special
